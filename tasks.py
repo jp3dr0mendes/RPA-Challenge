@@ -1,10 +1,11 @@
 from robocorp.tasks import task
-from robocorp import browser
+
 from models.browser import Browser
 
 @task
-def robot_test():
-    Browser()
+def search_news():
+    """Search a n"""
+    Browser('https://www.nytimes.com/')
     # open_website()
     """Extração de dados de um site de notícias"""
     # message = "Hello"
