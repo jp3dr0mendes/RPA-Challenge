@@ -1,5 +1,10 @@
 from robocorp import browser
+from robocorp.browser.keybord import Keybord
+from robocorp.desktop import Desktop
+# from robocorp.browser.cookies import Cookies
+
 import robocorp.workitems
+
 
 class Browser:
     def __init__(self) -> None:
@@ -9,8 +14,11 @@ class Browser:
         try:
             browser.goto(self.site)
             page = browser.page()
+            kb = Keybord(browser)
+            dt = Desktop()
             
             page.fill("#searchTextField","test")
-            page.click(".css-1bf34ii")
+            kb.press_key(Keybord.KEY_ENTER)
+            # page.click(".css-1bf34ii")
         except:
             print("Error on open browser")
