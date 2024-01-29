@@ -20,7 +20,7 @@ def search_news():
     inputs    = workitems.inputs
     input     = [i.payload for i in inputs]
     input     = input[0]
-    news_data = Browser(input["month"],input["section"],input["news"])
+    news_data = Browser(int(input["month"]),input["section"],input["news"])
     table     = output_data(news_data.news)
 
     payload = []

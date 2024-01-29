@@ -15,7 +15,7 @@ class Browser:
         # browser.goto(site)
         browser.configure(
             slowmo=10,
-            browser_engine='msedge',
+            # browser_engine='msedge',
         )
 
         self.site = 'https://www.nytimes.com/'
