@@ -13,7 +13,7 @@ import random
 
 class Browser:
 
-    def __init__(self, site:str) -> None:
+    def __init__(self, months_qtd: int, section: str, news_user: str) -> None:
 
         # browser.goto(site)
         browser.configure(
@@ -21,44 +21,87 @@ class Browser:
             browser_engine='chrome',
         )
 
-        browser.goto(site)
+        self.site = 'https://www.nytimes.com/'
+        self.page    = browser.page()
+        self.crawler = Crawler()
 
-        self.page = browser.page()
+        browser.goto(self.site)
 
+        print(f"""
+                ----------------------------------------------------------------
+                               Acessing: {self.page.url}
+                ----------------------------------------------------------------
+                """)
+        
+        time.sleep(random.randint(1,5))
+        
         try:
             self.page.click("button:text('Accept all')")
         except:
             print("No Cookies detected")
             pass
 
-        print("Test Logging")
-        self.search(1, 'Arts')
+        print("""
+                ----------------------------------------------------------------
+                                  Cookies Accepted
+                ----------------------------------------------------------------
+                """)
 
+
+        self.search(news_user, months_qtd, section)
+
+        print("""
+                ----------------------------------------------------------------
+                                   Ordering by Newest
+                ----------------------------------------------------------------
+                """)
+
+        self.page.select_option("data-testid=SearchForm-sortBy", "Sort by Newest")
+        
+        """Click to get all news"""
+        
+        # while True:
+        #     try:
+        #         self.page.click("button:text('Show More')")
+        #     except:
+        #         print("No More News on Page")
+                # break
+        
         print(self.page.url)
-
-        self.crawler = Crawler()
-
         self.news = self.crawler.soup(self.page.url)
+
         print(self.news)
 
     # def search(self, phrase: str, section: str, month: int) -> None:
-    def search(self, month:int, section: str) -> None:
+    def search(self, news: str, month:int, section: str) -> None:
 
         """Serch on New York Times for user's news"""
 
+        print(f"""
+                ----------------------------------------------------------------
+                                 Searching for {news}
+                ----------------------------------------------------------------
+                """)
+        time.sleep(random.randint(1,5))
         self.page.click("data-testid=search-button")
+        time.sleep(random.randint(1,5))
         self.page.fill(".css-1u4s13l", "oi")
+        time.sleep(random.randint(1,5))
         self.page.click("button:text('Go')")
 
-        time.sleep(3)
+        # time.sleep(3)
 
-        # self.page.click("data-testid=search-date-dropdown-a")
-        # self.page.click("button:text('Specific Dates')")
+        print(f"""
+                ----------------------------------------------------------------
+                          Filter by  |  Section  | Months  |
+                        -------------+-----------+---------+
+                                     | {section} | {month} |
+                        -------------+-----------+---------=
+                ----------------------------------------------------------------
+                """)
 
         self.filter_section(section)
         self.filter_time(month)
-        self.order_news()
-        # self.get_all_news()
             
     def filter_time(self, month: int) -> None:
 
@@ -97,6 +140,7 @@ class Browser:
         time.sleep(random.randint(10,15))
 
     def filter_section(self, section: str):
+
         """Filter by section"""
 
         if section not in ['Any', 'Arts', 'Books', 'Business', 'New York', 'Opinion', 'Sports', 'Travel', 'U.S.', 'World']:
@@ -107,19 +151,3 @@ class Browser:
             self.page.click(f"span:text('{section}')")
             self.page.click("data-testid=search-multiselect-button")
 
-    def order_news(self):
-
-        """Ordering by Newest"""
-        
-        self.page.select_option("data-testid=SearchForm-sortBy", "Sort by Newest")
-
-    def get_all_news(self):
-        
-        """Click to get all news"""
-        
-        while True:
-            try:
-                self.page.click("button:text('Show More')")
-            except:
-                print("No More News on Page")
-                break

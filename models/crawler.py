@@ -25,28 +25,39 @@ class Crawler:
         page_news_div = self.page.find_all('li', class_='css-1l4w6pd')
 
         for news in page_news_div:
+
             news_data            = {}
-            news_data['Title']   = news.find('h4').text
-            news_data['Date']    = news.find_all('span', class_='css-bc0f0m')[0].text.replace('PRINT EDITION','').split(',')[0:2]
-            
-            if '|' in news_data['Date'][0]:
-                news_data['Date'][0] = news_data['Date'][0].split('|')[1]
-                news_data['Date']    = news_data['Date'][0] + ',' + news_data['Date'][1]
+            news_data['Title']   = news.find_all('h4', class_='css-2fgx4k')[0].text
 
-            elif '|' in news_data['Date'][1]:
-                news_data['Date'][1] = news_data['Date'][1].split('|')[1]
-                news_data['Date']    = news_data['Date'][0] + ',' + news_data['Date'][1]
-
-            elif news_data['Date'][1].split(" ")[-1] not in ['1','2','3','4','5','6','7','8','9']:
-                news_data['Date']    = 'No date specified'
-
-            else:
-                news_data['Date']    = news_data['Date'][0] + ',' + news_data['Date'][1]
+            print(news_data)
 
             try:
                 news_data['Description'] = news.find_all('p', class_='css-16nhkrn')[0].text
             except:
                 news_data['Description'] = 'No description available'
+
+            try:
+                news_data['Date']      = news.find_all('span', class_='css-bc0f0m')[0].text.replace('PRINT EDITION','').split(',')[0:2]
+            except:
+                if news.find(attrs={"data-testid": "todays-date"}) != None:
+                    news_data['Date'] = news.find(attrs={"data-testid": "todays-date"})
+                else:
+                    news_data['Date'] = 'No Date Available'
+
+            if news_data['Date'] != 'No Date Available':
+                if '|' in news_data['Date'][0]:
+                    news_data['Date'][0] = news_data['Date'][0].split('|')[1]
+                    news_data['Date']    = news_data['Date'][0] + ',' + news_data['Date'][1]
+
+                elif '|' in news_data['Date'][1]:
+                    news_data['Date'][1] = news_data['Date'][1].split('|')[1]
+                    news_data['Date']    = news_data['Date'][0] + ',' + news_data['Date'][1]
+
+                elif news_data['Date'][1].split(" ")[-1] not in ['1','2','3','4','5','6','7','8','9']:
+                    news_data['Date']    = 'No date specified'
+
+                else:
+                    news_data['Date']    = news_data['Date'][0] + ',' + news_data['Date'][1]
 
             if '&' in news_data['Description'] or 'dollars' in news_data['Description'] or 'USD' in news_data['Description']:
                 news_data['Any Money'] = True
@@ -62,3 +73,4 @@ class Crawler:
             self.news_list.append(news_data)
         
         return self.news_list
+    
