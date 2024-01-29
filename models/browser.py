@@ -1,13 +1,10 @@
 from robocorp import browser
-
 from RPA.HTTP import HTTP
-
 from datetime import datetime, date, timedelta
-
 from models.crawler import Crawler
 
 # import robocorp.workitems
-
+from  RPA.Browser.Selenium import WebDriverWait
 import time
 import random
 
@@ -18,19 +15,26 @@ class Browser:
         # browser.goto(site)
         browser.configure(
             slowmo=10,
-            browser_engine='chrome',
+            browser_engine='msedge',
         )
 
         self.site = 'https://www.nytimes.com/'
+
         self.page    = browser.page()
         self.crawler = Crawler()
+        
+        self.inputs  = {
+            "months"  : months_qtd,
+            "section" : section,
+            "news"    : news_user
+        }
 
         browser.goto(self.site)
 
         print(f"""
-                ----------------------------------------------------------------
+            -------------------------------------------------------------------
                                Acessing: {self.page.url}
-                ----------------------------------------------------------------
+            -------------------------------------------------------------------
                 """)
         
         time.sleep(random.randint(1,5))
@@ -47,8 +51,8 @@ class Browser:
                 ----------------------------------------------------------------
                 """)
 
+        self.search(self.inputs["news"], self.inputs["months"], self.inputs["section"])
 
-        self.search(news_user, months_qtd, section)
 
         print("""
                 ----------------------------------------------------------------
@@ -68,12 +72,11 @@ class Browser:
                 # break
         
         print(self.page.url)
+
         self.news = self.crawler.soup(self.page.url)
 
-        print(self.news)
 
-    # def search(self, phrase: str, section: str, month: int) -> None:
-    def search(self, news: str, month:int, section: str) -> None:
+    def search(self, news: str, month:int, section: str) -> bool:
 
         """Serch on New York Times for user's news"""
 
@@ -82,6 +85,7 @@ class Browser:
                                  Searching for {news}
                 ----------------------------------------------------------------
                 """)
+
         time.sleep(random.randint(1,5))
         self.page.click("data-testid=search-button")
         time.sleep(random.randint(1,5))
@@ -99,9 +103,26 @@ class Browser:
                         -------------+-----------+---------=
                 ----------------------------------------------------------------
                 """)
+        time.sleep(random.randint(1,3))
+        while True:
+            if self.copy_treatment():
+                browser.goto(self.site)
+                self.search(self.inputs["news"], self.inputs["months"], self.inputs["section"])
+            else:
+                break
 
         self.filter_section(section)
         self.filter_time(month)
+
+    def copy_treatment(self) -> bool:
+
+        """Copywrite Treatments"""
+
+        copy = self.page.url
+        if 'Copy' in copy:
+            return True
+        else:
+            return False
             
     def filter_time(self, month: int) -> None:
 

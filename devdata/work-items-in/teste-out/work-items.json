@@ -1,9 +1,7 @@
 [
   {
       "payload": {
-         "news": "oi",
-         "month": 1,
-         "section": "Any"
+         "message": "Hello World!"
       },
       "files": {
           "orders.xlsx": "orders.xlsx"
