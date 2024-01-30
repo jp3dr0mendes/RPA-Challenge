@@ -2,11 +2,11 @@ from robocorp.tasks import task
 from robocorp import workitems
 from RPA.Tables import Tables
 from RPA.Excel.Files import Files
-# from robocorp.log 
-
 from models.browser import Browser
 
-# OUTPUT_FILE_PATH = "/output"
+import json
+
+OUTPUT_DATA_PATH = '/output/output.json'
 
 table = Tables()
 excel = Files()
@@ -18,14 +18,24 @@ excel = Files()
 def search_news():
     """Search a n"""
     inputs    = workitems.inputs
+
     input     = [i.payload for i in inputs]
     input     = input[0]
+    print(inputs.released)
     news_data = Browser(int(input["month"]),input["section"],input["news"])
+    
+    # x = inputs.reserve()
+    # del inputs
+    
     table     = output_data(news_data.news)
 
     payloads = create_work_item_payloads(table)
 
-    save_work_item_payloads(payloads[0])
+    with open('output.json','w') as output_file:
+        json.dump(payloads, output_file, indent=2)
+    # save_work_item_payloads(payloads)
+
+    # save_work_item_payloads(payloads[0])
 
     # for payload in payloads:
     #     save_work_item_payloads(dict(traffic_data=payload))
@@ -47,16 +57,17 @@ def search_news():
     # workitems.outputs.create(output)
 
 
-    
+@task
+def test_task():
 
+    output_data = dict()    
+    with open('output.json','r') as payload_file:
+        output_data = json.load(payload_file)
 
-# @task
-# def filter_news():
-
-# @task
-# def get_news_data():
-
-# @task
+    workbook = excel.create_workbook(sheet_name="news_data", path='/output_data')
+    workbook.save()
+    print(type(output_data))
+    save_work_item_payloads(output_data)
 
 def create_work_item_payloads(traffic_data):
     payloads = []
@@ -71,12 +82,14 @@ def create_work_item_payloads(traffic_data):
         payloads.append(payload)
     return payloads
 
-def save_work_item_payloads(payloads):
-    for payload in payloads:
+def save_work_item_payloads(data):
+    for payload in data:
         variables = dict(traffic_data=payload)
         workitems.outputs.create(variables)
+        print(f'passou{variables}')
 
-def output_data(news_data: dict) -> bool:
-    # column = [t.key for t in news_data if t not in column]
-    
+def output_data(news_data: dict) -> bool:    
     return table.create_table(data=news_data)
+
+def create_excel_file(data: list):
+    pass
