@@ -68,9 +68,9 @@ def create_work_item_payloads(traffic_data):
 
 def save_work_item_payloads(data):
     for payload in data:
-        variables = dict(traffic_data=payload)
-        workitems.outputs.create(variables)
-        print(f'passou{variables}')
+        # variables = dict(traffic_data=payload)
+        workitems.outputs.create(payload)
+        print(f'passou{payload}')
 
 def output_data(news_data: dict) -> bool:    
     return table.create_table(data=news_data)
