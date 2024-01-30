@@ -1,0 +1,34 @@
+from robocorp.tasks import task
+from robocorp import workitems
+from RPA.Tables import Tables
+from RPA.Excel.Files import Files
+from models.browser import Browser
+
+import json
+import os
+
+table = Tables()
+excel = Files()
+
+@task
+def test_task():
+
+    output_data = dict()    
+    with open('output.json','r') as payload_file:
+        output_data = json.load(payload_file)
+
+    print(type(output_data))
+    save_work_item_payloads(output_data)
+
+    # os.mkdir('output_data')
+    # os.chmod('output_data',os.W_OK)
+    wb = excel.create_workbook("workbook")
+    wb.create_worksheet("worksheet")
+    wb.save("workbooksdffsdfds.xlsx")
+
+def save_work_item_payloads(data):
+    for payload in data:
+        # variables = dict(traffic_data=payload)
+        print("aqui passsou ksjdfhsdas")
+        workitems.outputs.create(payload)
+        print(f'passou{payload}')

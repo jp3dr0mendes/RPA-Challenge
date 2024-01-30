@@ -7,8 +7,6 @@ from models.browser import Browser
 import json
 import os
 
-OUTPUT_DATA_PATH = '/output/output.json'
-
 table = Tables()
 excel = Files()
 # def create_output(news_list: dict) -> list:
@@ -37,21 +35,21 @@ def search_news():
     
     print("passou 1")
 
-@task
-def test_task():
+# @task
+# def test_task():
 
-    output_data = dict()    
-    with open('output.json','r') as payload_file:
-        output_data = json.load(payload_file)
+#     output_data = dict()    
+#     with open('output.json','r') as payload_file:
+#         output_data = json.load(payload_file)
 
-    print(type(output_data))
-    save_work_item_payloads(output_data)
+#     print(type(output_data))
+#     save_work_item_payloads(output_data)
 
-    # os.mkdir('output_data')
-    # os.chmod('output_data',os.W_OK)
-    wb = excel.create_workbook("workbook")
-    wb.create_worksheet("worksheet")
-    wb.save("workbook.xlsx")
+#     # os.mkdir('output_data')
+#     # os.chmod('output_data',os.W_OK)
+#     wb = excel.create_workbook("workbook")
+#     wb.create_worksheet("worksheet")
+#     wb.save("workbook.xlsx")
 
 def create_work_item_payloads(traffic_data):
     payloads = []
