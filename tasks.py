@@ -69,6 +69,7 @@ def create_work_item_payloads(traffic_data):
 def save_work_item_payloads(data):
     for payload in data:
         # variables = dict(traffic_data=payload)
+        print("aqui passsou ksjdfhsdas")
         workitems.outputs.create(payload)
         print(f'passou{payload}')
 
