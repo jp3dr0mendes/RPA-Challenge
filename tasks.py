@@ -5,6 +5,7 @@ from RPA.Excel.Files import Files
 from models.browser import Browser
 
 import json
+import os
 
 OUTPUT_DATA_PATH = '/output/output.json'
 
@@ -33,29 +34,8 @@ def search_news():
 
     with open('output.json','w') as output_file:
         json.dump(payloads, output_file, indent=2)
-    # save_work_item_payloads(payloads)
-
-    # save_work_item_payloads(payloads[0])
-
-    # for payload in payloads:
-    #     save_work_item_payloads(dict(traffic_data=payload))
     
-    # payload = []
-
-    # for row in table:
-    #     item = dict(
-    #         Title       = row['Title'],
-    #         Description = row['Description'],
-    #         Date        = row['Date'],
-    #         Any_Money   = row['Any Money'],
-    #         Image_Link  = row['Image Link'],
-    #     )
-    #     payload.append(item)
-
-    # output = dict(traffic_data=payload)
-    # workitems.outputs.create()
-    # workitems.outputs.create(output)
-
+    print("passou 1")
 
 @task
 def test_task():
@@ -64,10 +44,14 @@ def test_task():
     with open('output.json','r') as payload_file:
         output_data = json.load(payload_file)
 
-    workbook = excel.create_workbook(sheet_name="news_data", path='/output_data')
-    workbook.save()
     print(type(output_data))
     save_work_item_payloads(output_data)
+
+    # os.mkdir('output_data')
+    # os.chmod('output_data',os.W_OK)
+    wb = excel.create_workbook("workbook")
+    wb.create_worksheet("worksheet")
+    wb.save("workbook.xlsx")
 
 def create_work_item_payloads(traffic_data):
     payloads = []
