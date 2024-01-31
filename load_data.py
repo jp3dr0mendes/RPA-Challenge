@@ -23,8 +23,8 @@ def test_task():
 
     output = workitems.outputs
 
-    for payload in output_data:
-        output.create(payload)
+    # for payload in output_data:
+    #     output.create(payload)
 
     # os.mkdir('output_data')
     # os.chmod('output_data',os.W_OK)
