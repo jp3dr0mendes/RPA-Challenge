@@ -38,7 +38,7 @@ def search_news():
     with open('output.json','w') as output_file:
         json.dump(payloads, output_file, indent=2)
 
-    
+    lib.save_work_item()
 
     save_work_item_payloads(payloads, lib)
     
@@ -74,10 +74,15 @@ def create_work_item_payloads(traffic_data):
     return payloads
 
 def save_work_item_payloads(data, teste):
+    with open('teste.txt','w') as file:
+        file.write("testando isso aqui")
+
     for payload in data:
         # variables = dict(traffic_data=payload)
         print("aqui passsou ksjdfhsdas")
-        teste.create_output_work_item(payload)
+        teste.create_output_work_item(payload, files="teste.txt")
+        print("salvando")
+        teste.save_work_item()
         # workitems.outputs.create(payload)
         print(f'passou{payload}')
 
