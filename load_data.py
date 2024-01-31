@@ -18,7 +18,13 @@ def test_task():
         output_data = json.load(payload_file)
 
     print(type(output_data))
-    save_work_item_payloads(output_data)
+    print("vamo ve se agr vai neh")
+    # save_work_item_payloads(output_data)
+
+    output = workitems.outputs
+
+    for payload in output_data:
+        output.create(payload)
 
     # os.mkdir('output_data')
     # os.chmod('output_data',os.W_OK)
