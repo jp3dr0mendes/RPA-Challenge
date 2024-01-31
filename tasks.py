@@ -3,7 +3,7 @@ from robocorp import workitems
 from RPA.Tables import Tables
 from RPA.Excel.Files import Files
 from models.browser import Browser
-
+from RPA.Robocorp.WorkItems import State, WorkItems
 import json
 import os
 
@@ -16,12 +16,17 @@ excel = Files()
 @task
 def search_news():
     """Search a n"""
-    inputsw    = workitems
+    # inputsw    = workitems
 
-    inputs     = [i.payload for i in inputsw.inputs]
-    input     = inputs[0]
+    # inputs     = [i.payload for i in inputsw.inputs]
+    # input     = inputs[0]
     # print(inputs.released)
-    news_data = Browser(int(input["month"]),input["section"],input["news"])
+
+    lib = WorkItems()
+    w = lib.get_input_work_item().payload
+    print(w)
+    print(lib)
+    news_data = Browser(int(w["month"]),w["section"],w["news"])
     
     # x = inputs.reserve()
     # del inputs
@@ -33,7 +38,9 @@ def search_news():
     with open('output.json','w') as output_file:
         json.dump(payloads, output_file, indent=2)
 
-    # save_work_item_payloads(payloads, inputsw)
+    
+
+    save_work_item_payloads(payloads, lib)
     
     print("passou 1")
 
@@ -70,7 +77,7 @@ def save_work_item_payloads(data, teste):
     for payload in data:
         # variables = dict(traffic_data=payload)
         print("aqui passsou ksjdfhsdas")
-        teste.outputs.create(payload)
+        teste.create_output_work_item(payload)
         # workitems.outputs.create(payload)
         print(f'passou{payload}')
 

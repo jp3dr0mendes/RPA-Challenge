@@ -34,8 +34,6 @@ def test_task():
     wb.create_worksheet("worksheet")
     wb.save("workbooksdffsdfds.xlsx")
 
-    pdf = PDF()
-    pdf.active_pdf_document
 
 def save_work_item_payloads(data):
     for payload in data:
