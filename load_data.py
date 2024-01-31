@@ -21,7 +21,7 @@ def test_task():
 
     print(type(output_data))
     print("vamo ve se agr vai neh")
-    # save_work_item_payloads(output_data)
+    save_work_item_payloads(output_data)
 
     output = workitems.outputs
 
