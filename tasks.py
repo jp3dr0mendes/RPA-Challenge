@@ -89,10 +89,10 @@ def save_work_item_payloads(data, teste):
         print(f'passou{payload}')
         http.download(url=payload["Image_Link"], overwrite=True)
         path = payload["Image_Link"].split('/')[-1]
-        teste.create_output_work_item(variables, files=["teste.txt", path])
+        teste.create_output_work_item(payload, files=["teste.txt", path], save=True)
 
-    print("salvandooooooooooooooooo")
-    teste.save_work_item()
+    print("salvandooooooooooooooooo522522885")
+    # teste.save_work_item()
     print(teste)
     print("sei la dog")
 
