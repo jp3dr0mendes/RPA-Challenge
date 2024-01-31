@@ -16,4 +16,4 @@ testrun/*
 .~lock*
 *.pkl
 *.xlsx
-
+*.jpg

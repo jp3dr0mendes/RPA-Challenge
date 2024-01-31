@@ -2,6 +2,7 @@ from robocorp.tasks import task
 from robocorp import workitems
 from RPA.Tables import Tables
 from RPA.Excel.Files import Files
+from RPA.HTTP import HTTP
 from models.browser import Browser
 from RPA.Robocorp.WorkItems import State, WorkItems
 import json
@@ -9,6 +10,7 @@ import os
 
 table = Tables()
 excel = Files()
+http = HTTP()
 # def create_output(news_list: dict) -> list:
 
 
@@ -80,12 +82,18 @@ def save_work_item_payloads(data, teste):
     for payload in data:
         variables = dict(traffic_data=payload)
         print("aqui passsou ksjdfhsdas")
-        teste.create_output_work_item(variables, files="teste.txt")
+        # teste.create_output_work_item(variables, files="teste.txt")
         print("salvando")
         # teste.save_work_item()
         # workitems.outputs.create(payload)
         print(f'passou{payload}')
-    teste.save_work_item()
+        http.download(url=payload["Image_Link"], overwrite=True)
+        path = payload["Image_Link"].split('/')[-1]
+        teste.create_output_work_item(variables, files=["teste.txt", path])
+
+
+        teste.save_work_item()
+    print(teste)
     print("sei la dog")
 
 def output_data(news_data: dict) -> bool:    
