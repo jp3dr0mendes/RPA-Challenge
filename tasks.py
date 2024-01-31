@@ -78,13 +78,14 @@ def save_work_item_payloads(data, teste):
         file.write("testando isso aqui")
 
     for payload in data:
-        # variables = dict(traffic_data=payload)
+        variables = dict(traffic_data=payload)
         print("aqui passsou ksjdfhsdas")
-        teste.create_output_work_item(payload, files="teste.txt")
+        teste.create_output_work_item(variables, files="teste.txt")
         print("salvando")
-        teste.save_work_item()
+        # teste.save_work_item()
         # workitems.outputs.create(payload)
         print(f'passou{payload}')
+    teste.save_work_item()
 
 def output_data(news_data: dict) -> bool:    
     return table.create_table(data=news_data)
