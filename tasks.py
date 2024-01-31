@@ -16,11 +16,11 @@ excel = Files()
 @task
 def search_news():
     """Search a n"""
-    inputs    = workitems.inputs
+    inputsw    = workitems
 
-    input     = [i.payload for i in inputs]
-    input     = input[0]
-    print(inputs.released)
+    inputs     = [i.payload for i in inputsw.inputs]
+    input     = inputs[0]
+    # print(inputs.released)
     news_data = Browser(int(input["month"]),input["section"],input["news"])
     
     # x = inputs.reserve()
@@ -32,6 +32,8 @@ def search_news():
 
     with open('output.json','w') as output_file:
         json.dump(payloads, output_file, indent=2)
+
+    # save_work_item_payloads(payloads, inputsw)
     
     print("passou 1")
 
@@ -64,11 +66,12 @@ def create_work_item_payloads(traffic_data):
         payloads.append(payload)
     return payloads
 
-def save_work_item_payloads(data):
+def save_work_item_payloads(data, teste):
     for payload in data:
         # variables = dict(traffic_data=payload)
         print("aqui passsou ksjdfhsdas")
-        workitems.outputs.create(payload)
+        teste.outputs.create(payload)
+        # workitems.outputs.create(payload)
         print(f'passou{payload}')
 
 def output_data(news_data: dict) -> bool:    

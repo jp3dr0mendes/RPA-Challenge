@@ -1,7 +1,9 @@
 from robocorp.tasks import task
 from robocorp import workitems
+# from robocorp.robot.api
 from RPA.Tables import Tables
 from RPA.Excel.Files import Files
+from RPA.PDF import PDF
 from models.browser import Browser
 
 import json
@@ -31,6 +33,9 @@ def test_task():
     wb = excel.create_workbook("workbook")
     wb.create_worksheet("worksheet")
     wb.save("workbooksdffsdfds.xlsx")
+
+    pdf = PDF()
+    pdf.active_pdf_document
 
 def save_work_item_payloads(data):
     for payload in data:
