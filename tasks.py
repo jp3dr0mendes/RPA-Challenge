@@ -86,6 +86,7 @@ def save_work_item_payloads(data, teste):
         # workitems.outputs.create(payload)
         print(f'passou{payload}')
     teste.save_work_item()
+    print("sei la dog")
 
 def output_data(news_data: dict) -> bool:    
     return table.create_table(data=news_data)
