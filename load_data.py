@@ -49,6 +49,8 @@ def test_task():
     # for item in output_data:
     #     wb.insert_rows(item)
     wb.save("workbooksdffsdfds.xlsx")
+    workitems.get_input_work_item()
+    workitems.create_output_work_item(dict(),files="workbooksdffsdfds.xlsx")
 
 
 
