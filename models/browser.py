@@ -1,10 +1,10 @@
 from robocorp import browser
 from RPA.HTTP import HTTP
+from  RPA.Browser.Selenium import WebDriverWait
+
 from datetime import datetime, date, timedelta
 from models.crawler import Crawler
 
-# import robocorp.workitems
-from  RPA.Browser.Selenium import WebDriverWait
 import time
 import random
 
@@ -171,4 +171,3 @@ class Browser:
             self.page.click("data-testid=search-multiselect-button")
             self.page.click(f"span:text('{section}')")
             self.page.click("data-testid=search-multiselect-button")
-

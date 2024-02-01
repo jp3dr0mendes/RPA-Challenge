@@ -46,22 +46,6 @@ def search_news():
     
     print("passou 1")
 
-# @task
-# def test_task():
-
-#     output_data = dict()    
-#     with open('output.json','r') as payload_file:
-#         output_data = json.load(payload_file)
-
-#     print(type(output_data))
-#     save_work_item_payloads(output_data)
-
-#     # os.mkdir('output_data')
-#     # os.chmod('output_data',os.W_OK)
-#     wb = excel.create_workbook("workbook")
-#     wb.create_worksheet("worksheet")
-#     wb.save("workbook.xlsx")
-
 def create_work_item_payloads(traffic_data):
     payloads = []
     for row in traffic_data:
@@ -83,12 +67,15 @@ def save_work_item_payloads(data, teste):
         variables = dict(traffic_data=payload)
         print("aqui passsou ksjdfhsdas")
         # teste.create_output_work_item(variables, files="teste.txt")
+
         print("salvando")
-        # teste.save_work_item()
-        # workitems.outputs.create(payload)
         print(f'passou{payload}')
+
         http.download(url=payload["Image_Link"], overwrite=True)
-        path = payload["Image_Link"].split('/')[-1]
+
+        path                  = payload["Image_Link"].split('/')[-1]
+        payload["Image_Link"] = path
+
         teste.create_output_work_item(payload, files=["teste.txt", path], save=True)
 
     print("salvandooooooooooooooooo522522885")
