@@ -121,7 +121,7 @@ def save_work_item_payloads(data, workitem):
     wb.append_worksheet(name="news_data", content=data, header=True)
     wb.save("news_data.xlsx")
 
-    workitem.create_output_work_items(files="news_data.xlsx")
+    workitem.create_output_work_item(files="news_data.xlsx")
 
 def output_data(news_data: dict) -> bool:    
     return table.create_table(data=news_data)
