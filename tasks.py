@@ -121,7 +121,9 @@ def save_work_item_payloads(data, workitem):
     wb.append_worksheet(name="news_data", content=data, header=True)
     wb.save("news_data.xlsx")
 
-    workitem.create_output_work_item(files="news_data.xlsx")
+    print("gerando o excel")
+
+    workitem.create_output_work_item(dict({"worksheet_output": "news_data.xlsx"}),files=["news_data.xlsx", "robot.log"])
 
 def output_data(news_data: dict) -> bool:    
     return table.create_table(data=news_data)
