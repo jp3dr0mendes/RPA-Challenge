@@ -50,7 +50,7 @@ def test_task():
     #     wb.insert_rows(item)
     wb.save("workbooksdffsdfds.xlsx")
     workitems.get_input_work_item()
-    workitems.create_output_work_item(dict(),files="workbooksdffsdfds.xlsx")
+    workitems.create_output_work_item(files="workbooksdffsdfds.xlsx")
 
 
 
