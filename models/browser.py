@@ -37,11 +37,13 @@ class Browser:
 
         browser.goto(self.site)
 
-        print(f"""
-            -------------------------------------------------------------------
-                               Acessing: {self.page.url}
-            -------------------------------------------------------------------
-                """)
+        logging.info(f"access {self.page.url}")
+
+        # print(f"""
+        #     -------------------------------------------------------------------
+        #                        Acessing: {self.page.url}
+        #     -------------------------------------------------------------------
+        #         """)
         
         time.sleep(random.randint(1,5))
         
@@ -49,22 +51,24 @@ class Browser:
             self.page.click("button:text('Accept all')")
         except:
             print("No Cookies detected")
+            logging.info("no cookies pop-up detected")
             pass
 
-        print("""
-                ----------------------------------------------------------------
-                                  Cookies Accepted
-                ----------------------------------------------------------------
-                """)
+        # print("""
+        #         ----------------------------------------------------------------
+        #                           Cookies Accepted
+        #         ----------------------------------------------------------------
+        #         """)
 
         self.search(self.inputs["news"], self.inputs["months"], self.inputs["section"])
 
+        logging.info(f"Order by Newest")
 
-        print("""
-                ----------------------------------------------------------------
-                                   Ordering by Newest
-                ----------------------------------------------------------------
-                """)
+        # print("""
+        #         ----------------------------------------------------------------
+        #                            Ordering by Newest
+        #         ----------------------------------------------------------------
+        #         """)
 
         self.page.select_option("data-testid=SearchForm-sortBy", "Sort by Newest")
         
@@ -86,6 +90,8 @@ class Browser:
 
         """Serch on New York Times for user's news"""
 
+        logging.info(f"Searching for {news}")
+
         print(f"""
                 ----------------------------------------------------------------
                                  Searching for {news}
@@ -101,17 +107,26 @@ class Browser:
 
         # time.sleep(3)
 
-        print(f"""
-                ----------------------------------------------------------------
-                          Filter by  |  Section  | Months  |
-                        -------------+-----------+---------+
-                                     | {section} | {month} |
-                        -------------+-----------+---------=
-                ----------------------------------------------------------------
-                """)
+        # print(f"""
+        #         ----------------------------------------------------------------
+        #                   Filter by  |  Section  | Months  |
+        #                 -------------+-----------+---------+
+        #                              | {section} | {month} |
+        #                 -------------+-----------+---------=
+        #         ----------------------------------------------------------------
+        #         """)
+        
         time.sleep(random.randint(1,3))
+
+        '''
+        Checking Copywrite Page
+        '''
+
         while True:
             if self.copy_treatment():
+
+                logging.info("Copywrite page detected. Restarting the process")
+
                 browser.goto(self.site)
                 self.search(self.inputs["news"], self.inputs["months"], self.inputs["section"])
             else:
@@ -133,6 +148,8 @@ class Browser:
     def filter_time(self, month: int) -> None:
 
         """Filter by month quantities"""
+
+        logging.info("Filter by months")
 
         self.page.click("data-testid=search-date-dropdown-a")
         self.page.click("button:text('Specific Dates')")
@@ -169,6 +186,8 @@ class Browser:
     def filter_section(self, section: str):
 
         """Filter by section"""
+
+        logging.info("Filter by section")
 
         if section not in ['Any', 'Arts', 'Books', 'Business', 'New York', 'Opinion', 'Sports', 'Travel', 'U.S.', 'World']:
             print("Invalid Section Error!")

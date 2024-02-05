@@ -23,7 +23,8 @@ class Crawler:
         enconde = request.encoding
 
         if request.status_code != 200:
-            print(f"Error - Status Code {requests.status_code}")
+            logging.error(f"Error {request.status_code}")
+            raise ConnectionError(f"Error {request.status_code} in connection")
         else:
             self.page      = bs(request.text,"html.parser",from_encoding=enconde)
             self.news_list = []

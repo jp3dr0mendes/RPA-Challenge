@@ -23,18 +23,39 @@ def search_news():
 
     """Search a news and Extract the information"""
 
+    print("05/02")
+
     lib = WorkItems()
-    w = lib.get_input_work_item().payload
-    print(w)
-    print(lib)
-    news_data = Browser(int(w["month"]),w["section"],w["news"])
+    workitem_input = lib.get_input_work_item().payload
 
-    table     = output_data(news_data.news)
+    logging.info("Getting input data")
 
-    payloads = create_work_item_payloads(table)
+    if not isinstance(workitem_input["month"], int):
+        logging.error("Invalid input workitem parameter")
+        raise ValueError("""
+                        The parameter "month" must be an integer.
+                        {"news": str,"month": int, "section": str}""")
+    
+    elif not isinstance(workitem_input["news"], str):
+        logging.error("Invalid input workitem parameter")
+        raise ValueError("""
+                        The parameter "news" must be an str.
+                        {"news": str,"month": int, "section": str}""")
+    
+    elif not workitem_input["section"] in ['Any', 'Arts', 'Books', 'Business', 'New York', 'Opinion', 'Sports', 'Travel', 'U.S.', 'World']:
+        logging.error("Invalid section parameter!")
+        raise ValueError("Section must be: 'Any', 'Arts', 'Books', 'Business', 'New York', 'Opinion', 'Sports', 'Travel', 'U.S.' or 'World'")
+    
+    else:
+        logging.info("Input data processing...")
+    # print(workitem_input)
+    # print(lib)
+    news_data      = Browser(int(workitem_input["month"]),workitem_input["section"],workitem_input["news"])
+    table          = output_data(news_data.news)
+    payloads       = create_work_item_payloads(table)
 
-    with open('output.json','w') as output_file:
-        json.dump(payloads, output_file, indent=2)
+    # with open('output.json','w') as output_file:
+    #     json.dump(payloads, output_file, indent=2)
 
     lib.save_work_item()
 
@@ -43,7 +64,9 @@ def search_news():
     print("passou 1")
 
 def create_work_item_payloads(traffic_data):
+    
     payloads = []
+
     for row in traffic_data:
         payload = dict(
             Title=row["Title"],
@@ -59,18 +82,33 @@ def save_work_item_payloads(data, workitem):
 
     for payload in data:
         variables = dict(traffic_data=payload)
-        print("aqui passsou ksjdfhsdas")
+        # print("aqui passsou ksjdfhsdas")
         # workitem.create_output_work_item(variables, files="workitem.txt")
 
         # print("salvando")
-        print(f'passou{payload}')
+        # print(f'passou{payload}')
 
-        http.download(url=payload["Image_Link"], overwrite=True)
+        logging.info(f"downloading {payload['Image_Link']}...")
 
+        try:
+            http.download(url=payload["Image_Link"], overwrite=True)
+        except:
+            logging.warning(f"Fail to download image: {payload['Image_Link']}")
+            # raise SystemError("Fail to download image. Check your connection")
         path                  = payload["Image_Link"].split('/')[-1]
         payload["Image_Link"] = path
 
-        workitem.create_output_work_item(payload, files = path, save = True)
+        logging.info(f"load output {payload}")
+
+        try:
+            workitem.create_output_work_item(payload, files = path, save = True)
+        except:
+            logging.critical("Fail to load output item")
+            raise SystemError("Failed on load output item. Try again!")
+        
+        logging.info("output item created")
+
+    logging.info("all output items created")
 
     # print("salvandooooooooooooooooo522522885")
     # workitem.save_work_item()
@@ -78,9 +116,11 @@ def save_work_item_payloads(data, workitem):
     # print("sei la dog")
 
     wb = excel.create_workbook("workbook")
-    wb.create_worksheet("worksheet")
+
+    wb.create_worksheet("news_data")
     wb.append_worksheet(name="news_data", content=data, header=True)
     wb.save("news_data.xlsx")
+
     workitem.create_output_work_items(files="news_data.xlsx")
 
 def output_data(news_data: dict) -> bool:    
