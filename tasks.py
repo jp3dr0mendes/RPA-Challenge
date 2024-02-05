@@ -123,7 +123,7 @@ def save_work_item_payloads(data, workitem):
 
     print("gerando o excel")
 
-    workitem.create_output_work_item(dict({"worksheet_output": "news_data.xlsx"}),files=["news_data.xlsx", "robot.log"], save=True)
+    workitem.create_output_work_item(dict({"worksheet_output": "news_data.xlsx"}),files=["news_data.xlsx", "robot.log"], save = True)
 
 def output_data(news_data: dict) -> bool:    
     return table.create_table(data=news_data)
