@@ -18,10 +18,6 @@ def test_task():
 
     print("começandooo")
 
-    # output_data = dict()    
-    # with open('output.json','r') as payload_file:
-    #     output_data = json.load(payload_file)
-
     output_data = []
 
     workitems = WorkItems()
@@ -53,9 +49,6 @@ def test_task():
     wb.save("workbooksdffsdfds.xlsx")
     workitems.get_input_work_item()
     workitems.create_output_work_item(files="workbooksdffsdfds.xlsx", save=True)
-
-
-
 
 def save_work_item_payloads(data):
     for payload in data:

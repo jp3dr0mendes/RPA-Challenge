@@ -2,6 +2,12 @@ from bs4 import BeautifulSoup as bs
 
 import requests
 
+import logging
+
+logging.basicConfig(level=logging.INFO,
+                    filename="robot.log",
+                    format="%(asctime)s - %(levelname)s - %(message)s")
+
 class Crawler:
     def __init__(self):
         self.headers = {

@@ -1,38 +1,34 @@
 from robocorp.tasks import task
-from robocorp import workitems
+
 from RPA.Tables import Tables
 from RPA.Excel.Files import Files
 from RPA.HTTP import HTTP
+from RPA.Robocorp.WorkItems import WorkItems
+
 from models.browser import Browser
-from RPA.Robocorp.WorkItems import State, WorkItems
+
 import json
-import os
+import logging
 
 table = Tables()
 excel = Files()
 http = HTTP()
-# def create_output(news_list: dict) -> list:
 
-
+logging.basicConfig(level=logging.INFO,
+                    filename="robot.log",
+                    format="%(asctime)s - %(levelname)s - %(message)s")
 
 @task
 def search_news():
-    """Search a n"""
-    # inputsw    = workitems
 
-    # inputs     = [i.payload for i in inputsw.inputs]
-    # input     = inputs[0]
-    # print(inputs.released)
+    """Search a news and Extract the information"""
 
     lib = WorkItems()
     w = lib.get_input_work_item().payload
     print(w)
     print(lib)
     news_data = Browser(int(w["month"]),w["section"],w["news"])
-    
-    # x = inputs.reserve()
-    # del inputs
-    
+
     table     = output_data(news_data.news)
 
     payloads = create_work_item_payloads(table)
@@ -59,16 +55,14 @@ def create_work_item_payloads(traffic_data):
         payloads.append(payload)
     return payloads
 
-def save_work_item_payloads(data, teste):
-    with open('teste.txt','w') as file:
-        file.write("testando isso aqui")
+def save_work_item_payloads(data, workitem):
 
     for payload in data:
         variables = dict(traffic_data=payload)
         print("aqui passsou ksjdfhsdas")
-        # teste.create_output_work_item(variables, files="teste.txt")
+        # workitem.create_output_work_item(variables, files="workitem.txt")
 
-        print("salvando")
+        # print("salvando")
         print(f'passou{payload}')
 
         http.download(url=payload["Image_Link"], overwrite=True)
@@ -76,15 +70,18 @@ def save_work_item_payloads(data, teste):
         path                  = payload["Image_Link"].split('/')[-1]
         payload["Image_Link"] = path
 
-        teste.create_output_work_item(payload, files = path, save = True)
+        workitem.create_output_work_item(payload, files = path, save = True)
 
-    print("salvandooooooooooooooooo522522885")
-    # teste.save_work_item()
-    print(teste)
-    print("sei la dog")
+    # print("salvandooooooooooooooooo522522885")
+    # workitem.save_work_item()
+    print(workitem)
+    # print("sei la dog")
+
+    wb = excel.create_workbook("workbook")
+    wb.create_worksheet("worksheet")
+    wb.append_worksheet(name="news_data", content=data, header=True)
+    wb.save("news_data.xlsx")
+    workitem.create_output_work_items(files="news_data.xlsx")
 
 def output_data(news_data: dict) -> bool:    
     return table.create_table(data=news_data)
-
-def create_excel_file(data: list):
-    pass

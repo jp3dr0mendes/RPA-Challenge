@@ -8,6 +8,12 @@ from models.crawler import Crawler
 import time
 import random
 
+import logging
+
+logging.basicConfig(level=logging.INFO,
+                    filename="robot.log",
+                    format="%(asctime)s - %(levelname)s - %(message)s")
+
 class Browser:
 
     def __init__(self, months_qtd: int, section: str, news_user: str) -> None:
