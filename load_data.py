@@ -16,6 +16,8 @@ excel = Files()
 @task
 def test_task():
 
+    print("começandooo")
+
     # output_data = dict()    
     # with open('output.json','r') as payload_file:
     #     output_data = json.load(payload_file)
@@ -50,7 +52,7 @@ def test_task():
     #     wb.insert_rows(item)
     wb.save("workbooksdffsdfds.xlsx")
     workitems.get_input_work_item()
-    workitems.create_output_work_item(files="workbooksdffsdfds.xlsx")
+    workitems.create_output_work_item(files="workbooksdffsdfds.xlsx", save=True)
 
 
 
