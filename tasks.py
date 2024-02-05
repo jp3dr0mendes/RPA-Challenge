@@ -76,7 +76,7 @@ def save_work_item_payloads(data, teste):
         path                  = payload["Image_Link"].split('/')[-1]
         payload["Image_Link"] = path
 
-        teste.create_output_work_item(payload, files=["teste.txt", path], save=True)
+        teste.create_output_work_item(payload, files = path, save = True)
 
     print("salvandooooooooooooooooo522522885")
     # teste.save_work_item()
