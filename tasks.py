@@ -48,14 +48,10 @@ def search_news():
     
     else:
         logging.info("Input data processing...")
-    # print(workitem_input)
-    # print(lib)
+
     news_data      = Browser(int(workitem_input["month"]),workitem_input["section"],workitem_input["news"])
     table          = output_data(news_data.news)
     payloads       = create_work_item_payloads(table)
-
-    # with open('output.json','w') as output_file:
-    #     json.dump(payloads, output_file, indent=2)
 
     lib.save_work_item()
 
@@ -81,12 +77,7 @@ def create_work_item_payloads(traffic_data):
 def save_work_item_payloads(data, workitem):
 
     for payload in data:
-        variables = dict(traffic_data=payload)
-        # print("aqui passsou ksjdfhsdas")
-        # workitem.create_output_work_item(variables, files="workitem.txt")
-
-        # print("salvando")
-        # print(f'passou{payload}')
+        # variables = dict(traffic_data=payload)
 
         logging.info(f"downloading {payload['Image_Link']}...")
 
@@ -94,7 +85,7 @@ def save_work_item_payloads(data, workitem):
             http.download(url=payload["Image_Link"], overwrite=True)
         except:
             logging.warning(f"Fail to download image: {payload['Image_Link']}")
-            # raise SystemError("Fail to download image. Check your connection")
+
         path                  = payload["Image_Link"].split('/')[-1]
         payload["Image_Link"] = path
 
@@ -110,10 +101,7 @@ def save_work_item_payloads(data, workitem):
 
     logging.info("all output items created")
 
-    # print("salvandooooooooooooooooo522522885")
-    # workitem.save_work_item()
     print(workitem)
-    # print("sei la dog")
 
     wb = excel.create_workbook("workbook")
 

@@ -39,12 +39,6 @@ class Browser:
 
         logging.info(f"access {self.page.url}")
 
-        # print(f"""
-        #     -------------------------------------------------------------------
-        #                        Acessing: {self.page.url}
-        #     -------------------------------------------------------------------
-        #         """)
-        
         time.sleep(random.randint(1,5))
         
         try:
@@ -54,21 +48,9 @@ class Browser:
             logging.info("no cookies pop-up detected")
             pass
 
-        # print("""
-        #         ----------------------------------------------------------------
-        #                           Cookies Accepted
-        #         ----------------------------------------------------------------
-        #         """)
-
         self.search(self.inputs["news"], self.inputs["months"], self.inputs["section"])
 
         logging.info(f"Order by Newest")
-
-        # print("""
-        #         ----------------------------------------------------------------
-        #                            Ordering by Newest
-        #         ----------------------------------------------------------------
-        #         """)
 
         self.page.select_option("data-testid=SearchForm-sortBy", "Sort by Newest")
         
@@ -92,29 +74,12 @@ class Browser:
 
         logging.info(f"Searching for {news}")
 
-        print(f"""
-                ----------------------------------------------------------------
-                                 Searching for {news}
-                ----------------------------------------------------------------
-                """)
-
         time.sleep(random.randint(1,5))
         self.page.click("data-testid=search-button")
         time.sleep(random.randint(1,5))
         self.page.fill(".css-1u4s13l", "oi")
         time.sleep(random.randint(1,5))
         self.page.click("button:text('Go')")
-
-        # time.sleep(3)
-
-        # print(f"""
-        #         ----------------------------------------------------------------
-        #                   Filter by  |  Section  | Months  |
-        #                 -------------+-----------+---------+
-        #                              | {section} | {month} |
-        #                 -------------+-----------+---------=
-        #         ----------------------------------------------------------------
-        #         """)
         
         time.sleep(random.randint(1,3))
 

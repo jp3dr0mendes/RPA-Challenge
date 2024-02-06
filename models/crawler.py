@@ -16,7 +16,9 @@ class Crawler:
         }
 
     def soup(self, url: str) -> list:
+
         """Filter the HTML of page to get a dataset of the news"""
+
         request = requests.get(url, 
                                 headers=self.headers)
         
@@ -44,7 +46,7 @@ class Crawler:
                 news_data['Description'] = 'No description available'
 
             try:
-                news_data['Date']      = news.find_all('span', class_='css-bc0f0m')[0].text.replace('PRINT EDITION','').split(',')[0:2]
+                news_data['Date']        = news.find_all('span', class_='css-bc0f0m')[0].text.replace('PRINT EDITION','').split(',')[0:2]
             except:
                 if news.find(attrs={"data-testid": "todays-date"}) != None:
                     news_data['Date'] = news.find(attrs={"data-testid": "todays-date"})
